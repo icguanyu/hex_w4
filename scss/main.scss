@@ -1,0 +1,417 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:700,900i");
+body,
+html {
+  background: #fff;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
+
+//%開頭為專門被繼承的樣式
+//置中
+%center {
+  display: inline-block;
+  position: absolute;
+}
+
+%centerX {
+  @extend %center;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+%centerY {
+  @extend %center;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+%centerXY {
+  @extend %center;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+//文字殘影
+@mixin shadow($content, $size, $t: 0, $l: 0) {
+  & {
+    position: absolute;
+    font-size: $size;
+    line-height: $size * 0.8;
+    top: $t;
+    left: $l;
+  }
+  &::after,
+  &::before {
+    content: $content;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: $size * 0.2;
+    overflow: hidden;
+    z-index: -1;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+  }
+  &::after {
+    top: -$size * 0.2;
+    color: rgba(0, 0, 0, 0.3);
+    line-height: $size * 0.8;
+  }
+  &::before {
+    top: -$size * 0.4;
+    line-height: $size * 0.8;
+    color: rgba(black, 0.1);
+  }
+}
+// 文字殘影
+@mixin imgbox($w, $h) {
+  position: relative;
+  width: $w;
+  height: $h;
+  overflow: hidden;
+  img {
+    position: absolute;
+    width: 130%;
+    top: 60%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+// 空心矩形
+@mixin shape($w, $h, $b, $r, $t) {
+  content: "";
+  position: absolute;
+  width: $w;
+  height: $h;
+  border: $b solid #50e3c2;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: -10;
+  right: $r;
+  top: $t;
+}
+// 實心矩形
+@mixin shape2($w, $h, $r, $t) {
+  content: "";
+  position: absolute;
+  width: $w;
+  height: $h;
+
+  background: #50e3c2;
+  z-index: -9;
+  right: $r;
+  top: $t;
+}
+// 紋路
+@mixin pattern($w, $h, $b, $l) {
+  content: "";
+  position: absolute;
+  width: $w;
+  height: $h;
+  background: repeating-linear-gradient(
+    -45deg,
+    #50e3c2,
+    #50e3c2 20px,
+    #fff0 10px,
+    #fff0 35px
+  );
+  bottom: $b;
+  left: $l;
+  z-index: 10;
+}
+// 斜體文字
+@mixin basic_text($r, $t: 0, $l: 0) {
+  -webkit-transform: rotate($r);
+  transform: rotate($r);
+  top: $t;
+  left: $l;
+}
+body {
+  width: 100%;
+  max-width: 1024px;
+  @extend %centerX;
+}
+.all {
+  width: 1024px;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+header {
+  width: 100%;
+  height: 100px;
+  padding: 20px 0 100px 0;
+  display: inline-block;
+  position: relative;
+}
+.ccclothes {
+  @extend %centerX;
+  text-align: center;
+  > p {
+    display: inline-block;
+    padding: 2px 5px;
+    font-size: 20px;
+    background: #000;
+    color: #fff;
+  }
+  > h1 {
+    font-size: 72px; // @include beforeAfter('MEN\'S TOPS',72px)
+  }
+}
+.wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  > .box {
+    display: inline-block;
+    width: 500px;
+    height: 500px; // border: 0.5px solid #eee;
+    position: relative;
+    .img_box {
+      position: absolute;
+    }
+    & > * {
+      position: absolute;
+    }
+    > .basic_text {
+      font-size: 24px;
+      font-style: italic;
+      p {
+        white-space: nowrap;
+      }
+    }
+    > .shadow_text {
+      white-space: nowrap;
+      font-size: 48px;
+    }
+    > .index {
+      font-size: 48px;
+    }
+  }
+  #index_01 {
+    > .basic_text {
+      @include basic_text(90deg, 370px, 430px);
+    }
+    > .shadow_text {
+      @include shadow("LINEN BLAZER", 48px);
+    }
+    > .index {
+      bottom: 0px;
+    }
+    > .img_box {
+      right: 0;
+      .imgcontain {
+        @include imgbox(480px, 400px);
+      }
+      &::after {
+        @include shape(250px, 250px, 20px, -70px, -50px);
+      }
+      &::before {
+        @include pattern(200px, 80px, -60px, 60px);
+      }
+    }
+  }
+  #index_02 {
+    .img_box {
+      .imgcontain {
+        @include imgbox(240px, 200px);
+      }
+    }
+    > .basic_text {
+      @include basic_text(0deg, 120px, 70px);
+    }
+    > .shadow_text {
+      @include shadow("FREELIFT", 48px, 390px, 290px);
+    }
+    > .index {
+      right: 0;
+      top: 50px;
+    }
+    > .img_box {
+      right: 0;
+      @extend %centerXY;
+      &::after {
+        @include shape(240px, 200px, 20px, -90px, -90px);
+      }
+      &::before {
+        @include shape2(240px, 200px, -40px, -40px);
+      }
+    }
+  }
+  #index_03 {
+    > .basic_text {
+      @include basic_text(0deg, 350px, 70px);
+    }
+    > .shadow_text {
+      @include shadow("SUPER SKINNY", 48px, 110px, 155px);
+    }
+    > .index {
+      bottom: 100px;
+      right: -30px;
+    }
+    > .img_box {
+      right: 0;
+      .imgcontain {
+        @include imgbox(480px, 200px);
+      }
+      @extend %centerY;
+      &::after {
+        @include shape(240px, 200px, 20px, -60px, 50px);
+      }
+      &::before {
+        @include shape2(240px, 200px, 240px, -40px);
+      }
+    }
+  }
+  #index_04 {
+    > .basic_text {
+      @include basic_text(90deg, 80px, 360px);
+    }
+    > .shadow_text {
+      -webkit-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+      @include shadow("DENIM", 48px, 200px, 140px);
+    }
+    > .index {
+      bottom: 10px;
+      left: 180px;
+    }
+    > .img_box {
+      right: 20px;
+      top: 150px;
+      .imgcontain {
+        @include imgbox(240px, 400px);
+      }
+      &::after {
+        @include shape(240px, 200px, 20px, 50px, -50px);
+      }
+      &::before {
+        @include pattern(240px, 80px, 30px, 0px);
+      }
+    }
+  }
+  #index_05 {
+    > .basic_text {
+      @include basic_text(0deg, 0px, 510px);
+    }
+    > .shadow_text {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+      @include shadow("SWEATSHIRTS", 48px, 50px, 20px);
+    }
+    > .index {
+      left: 110px;
+      top: 140px;
+    }
+    > .img_box {
+      right: 0;
+      .imgcontain {
+        @include imgbox(240px, 200px);
+      }
+      &::after {
+        @include shape(240px, 100px, 20px, 150px, 150px);
+      }
+      &::before {
+        @include pattern(240px, 80px, 170px, -200px);
+      }
+    }
+  }
+  #index_06 {
+    > .basic_text {
+      @include basic_text(0deg, 600px, 160px);
+    }
+    > .shadow_text {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+      @include shadow("VINTAGE DENIM", 48px, 160px, 125px);
+    }
+    > .index {
+      left: -60px;
+      top: 340px;
+    }
+    > .img_box {
+      top: 200px;
+      left: 0;
+      .imgcontain {
+        @include imgbox(480px, 400px);
+      }
+      &::after {
+        @include shape(480px, 120px, 20px, 0px, 340px);
+      }
+      &::before {
+        @include shape2(240px, 200px, 300px, 200px);
+      }
+    }
+  }
+  #index_07 {
+    > .basic_text {
+      @include basic_text(0deg, -130px, 0px);
+    }
+    > .shadow_text {
+      -webkit-transform: rotate(90deg);
+      transform: rotate(90deg);
+      @include shadow("EDITION", 48px, -25px, 170px);
+    }
+    > .index {
+      right: 180px;
+      bottom: 200px;
+    }
+    > .img_box {
+      top: -100px;
+      left: 0;
+      .imgcontain {
+        @include imgbox(240px, 400px);
+      }
+      &::after {
+        @include shape(240px, 400px, 20px, -60px, -80px);
+      }
+      &::before {
+        @include shape2(240px, 200px, -90px, 200px);
+      }
+    }
+  }
+}
+
+.copyright {
+  font-family: '微軟正黑體';
+  margin: 20px 0;
+  text-align: center;
+  a{
+    text-decoration: none;
+  }
+  p {
+    color: #333;
+    letter-spacing: 1px;
+  }
+}
